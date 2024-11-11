@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Administração</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="index.html">
+                <img src="https://th.bing.com/th/id/R.00bb84e21525d2ed895491006c8cceec?rik=dbWoAy18fpu57g&pid=ImgRaw&r=0" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
+                TechEvent
+              </a>
+            </div>
+          </nav>
+        </header>
+    <table id="corpoTabela">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>idade</th>
+                <th>email</th>
+                <th>telefone</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+</body>
+<script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional666666666
+    const firebaseConfig = {
+    apiKey: "AIzaSyCm0Pq6IHBof7X5OXiMu4vYk5u9NVQNuzY",
+    authDomain: "av60treino.firebaseapp.com",
+    projectId: "av60treino",
+    storageBucket: "av60treino.firebasestorage.app",
+    messagingSenderId: "836116233811",
+    appId: "1:836116233811:web:eb53c64032441f773910a6",
+    measurementId: "G-E47BCF0QP2"
+  };
+
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    async function carregarDados(){
+        const corpoTabela = document.getElementById('corpoTabela').getElementsByTagName('tbody')[0];
+
+        try {
+        const querySnapshot = await getDocs(collection(db, "contatos"));
+
+        querySnapshot.forEach((doc) => {
+          const { nome, idade, email, telefone, timestamp } = doc.data();
+          const dataFormatada = timestamp ? new Date(timestamp.toDate()).toLocaleString() : 'N/A';
+          
+          const novaLinha = document.createElement('tr');
+          novaLinha.innerHTML = `
+            <td>${nome}</td>
+            <td>${idade}</td>
+            <td>${email}</td>
+            <td>${telefone}</td>
+            <td>${dataFormatada}</td>
+          `;
+          corpoTabela.appendChild(novaLinha);
+        });
+
+      } catch (error) {
+        console.error('Erro ao carregar contatos: ', error);
+      }
+    }
+
+    // Chama a função para carregar os contatos ao carregar a página
+    window.onload = carregarDados;
+</script>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Inova Tech</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="font-size: 30px;">TechSolutions</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Cadastro</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Serviços</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main>
+
+        <form class="sac-form" action="" id="meuFormulario">
+            <label for="">Nome</label>
+            <input type="text" name="nome" id="nome" required pattern="^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$">
+            <br>
+            <label for="">Email</label>
+            <input type="email" name="email" id="email" required >
+            <br>    
+            <label for="">Telefone</label>
+            <input type="tel" name="telefone" id="telefone" required></input>
+            <br>
+            <label for="">Cidade</label>
+            <input type="text" name="cidade" id="cidade" required></input>
+            <br>
+            <label for="">Estado</label>
+            <input type="text" name="estado" id="estado" required></input>
+            <br>
+            <label for="">Bairro</label>
+            <input type="text" name="bairro" id="bairro" required></input>
+            <br>
+            <label for="">CEP</label>
+            <input type="number" name="cep" id="cep" required></input>
+            <br>
+            <button type="submit" class="forms-button">Enviar</button>
+    </main>
+    <footer>Avaliação 2024 Técnicos TI, Todos os direitos reservados</footer>
+</body>
+<script type="module">
+  
+
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+    
+    const firebaseConfig = {
+    apiKey: "AIzaSyCm0Pq6IHBof7X5OXiMu4vYk5u9NVQNuzY",
+    authDomain: "av60treino.firebaseapp.com",
+    projectId: "av60treino",
+    storageBucket: "av60treino.firebasestorage.app",
+    messagingSenderId: "836116233811",
+    appId: "1:836116233811:web:eb53c64032441f773910a6",
+    measurementId: "G-E47BCF0QP2"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+    //Conecte ao Firestore
+    const db = getFirestore(app)
+    
+      document.getElementById('meuFormulario').addEventListener('submit', async function(event) {
+          event.preventDefault();
+    
+    
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const telefone = document.getElementById('telefone').value;
+    const cidade = document.getElementById('cidade').value;
+    const estado = document.getElementById('estado').value;
+    const bairro = document.getElementById('bairro').value;
+    const cep = document.getElementById('cep').value;
+
+    
+    try {
+      await addDoc(collection(db, 'contatos'), {
+        nome: nome,
+        email: email,
+        telefone: telefone,
+        cidade: cidade,
+        estado: estado,
+        bairro: bairro,
+        cep: cep,
+        timestamp: serverTimestamp() 
+      });
+      alert('Dados enviados com sucesso!');
+      document.getElementById('meuFormulario').reset(); 
+    } catch (error) {
+      console.error('Erro ao enviar os dados: ', error);
+    }
+    });
+    </script>
+</html>
